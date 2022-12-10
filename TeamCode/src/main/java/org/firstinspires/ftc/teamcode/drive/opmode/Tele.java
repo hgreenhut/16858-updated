@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.drive.opmode;
 
 /* Copyright (c) 2017 FIRST. All rights reserved.
  *
@@ -59,13 +59,7 @@ public class Tele extends OpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
-    private DcMotor xRailMotor;
-    private DcMotor carMotor;
 
-    private Servo turnServo;
-    private Servo clampServo;
-    private double turnTarget;
-    private double clampTarget;
 
     private final double MAX_CAR_POWER = .5;
 
@@ -96,16 +90,11 @@ public class Tele extends OpMode {
             DcMotor.Direction direction = i % 2 == 0 ? DcMotor.Direction.REVERSE : DcMotor.Direction.FORWARD;
 
             motor.setDirection(direction);
-            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
         // XRail
-        this.xRailMotor = hardwareMap.get(DcMotor.class, "xr");
-        this.carMotor = hardwareMap.get(DcMotor.class, "cm");
 
-        // Servos
-        this.turnServo = hardwareMap.get(Servo.class, "ts");
-        this.clampServo = hardwareMap.get(Servo.class, "cs");
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -123,8 +112,6 @@ public class Tele extends OpMode {
      */
     @Override
     public void start() {
-        this.turnTarget = 0.5; //this.turnServo.getPosition();
-        this.clampTarget = 0.5; //this.clampServo.getPosition();
 
         runtime.reset();
     }
@@ -159,47 +146,14 @@ public class Tele extends OpMode {
         float downSpeed = gamepad2.left_trigger;
         float totalSpeed = upSpeed - downSpeed;
 
-        this.xRailMotor.setPower(totalSpeed);
 
-        // CAROUSEL MOTOR
-        if (this.gamepad2.x) {
-            this.carMotor.setPower(MAX_CAR_POWER);
-        } else if (this.gamepad2.y) {
-            this.carMotor.setPower(-MAX_CAR_POWER);
-        } else {
-            this.carMotor.setPower(0);
-        }
 
 
         // SERVO
 
-        if (this.gamepad2.left_bumper) {
-            this.turnTarget -= .001;
-        }
-        else if (this.gamepad2.right_bumper) {
-            this.turnTarget += .001;
-        }
 
 
-        if (this.gamepad2.a) {
-            this.clampTarget = 1;
-        } else if (this.gamepad2.b) {
-            this.clampTarget = 0;
-        } else {
-            this.clampTarget = .5;
-        }
 
-        this.clampServo.setPosition(this.clampTarget);
-        this.turnServo.setPosition(this.turnTarget);
-
-
-        // DATA
-        telemetry.addData("Status", "Run Time: " + runtime.toString());
-
-        telemetry.addData("Clamp Target", this.clampTarget);
-        telemetry.addData("Clamp Position", this.clampServo.getPosition());
-        telemetry.addData("Turn Target", this.turnTarget);
-        telemetry.addData("Turn Position", this.turnServo.getPosition());
 
     }
 
@@ -212,8 +166,7 @@ public class Tele extends OpMode {
             motor.setPower(0);
         }
 
-        this.xRailMotor.setPower(0);
-        this.carMotor.setPower(0);
+
     }
 
 }
