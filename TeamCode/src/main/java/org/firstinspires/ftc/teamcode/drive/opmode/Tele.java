@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Iterative OpMode", group="Iterative Opmode")
+@TeleOp(name="TeleOp", group="Iterative Opmode")
 public class Tele extends OpMode {
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -59,6 +59,8 @@ public class Tele extends OpMode {
     private DcMotor backLeft;
     private DcMotor backRight;
 
+    private DcMotor xrail;
+    private Servo hook;
 
 
     private final double MAX_CAR_POWER = .5;
@@ -94,7 +96,8 @@ public class Tele extends OpMode {
         }
 
         // XRail
-
+        xrail = hardwareMap.get(DcMotor.class, "xr");
+        hook = hardwareMap.get(Servo.class, "hook");
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -124,7 +127,7 @@ public class Tele extends OpMode {
         // DRIVING
         double drive = gamepad1.left_stick_y;
 
-        double turn = gamepad1.right_stick_x;
+        double turn = gamepad1.left_stick_y;
 
 
         double[] powers = {
@@ -150,6 +153,19 @@ public class Tele extends OpMode {
 
 
         // SERVO
+        boolean hook_on = false;
+        if (gamepad2.b) {
+            hook_on = true;
+        } else if (gamepad2.a){
+            hook_on = false;
+        }
+
+        if (hook_on) {
+            hook.setPosition(1);
+        } else {
+            hook.setPosition(0);
+        }
+
 
 
 
