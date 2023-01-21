@@ -155,9 +155,12 @@ public class Tele extends OpMode {
 
         if (gamepad2.b) {
             hook.setPosition(1);
+            telemetry.addData("Servo Position:", hook.getPosition());
         } else if (gamepad2.a){
             hook.setPosition(0);
+            telemetry.addData("Servo Position:", hook.getPosition());
         }
+
 
 
 
