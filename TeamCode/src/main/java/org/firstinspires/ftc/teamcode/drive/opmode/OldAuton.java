@@ -41,6 +41,7 @@ import org.firstinspires.ftc.teamcode.CommonVariables;
 import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
 import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
+import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
 
@@ -81,7 +82,13 @@ public class OldAuton extends OpMode {
         hook = hardwareMap.servo.get("hook");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "AdafruitIMUCalibration.json";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        imu.initialize(parameters);
 
         ArrayList<DcMotor> motors = new ArrayList<DcMotor>();
         motors.add(rightFront);
@@ -105,9 +112,10 @@ public class OldAuton extends OpMode {
         State[] states = {
 
 
-                new DriveState(stateMachine, motors, 5, "forward", 0),
-                new CWTurnByPID(stateMachine, 90, 5, motors, imu),
-                new CCWTurnByPID(stateMachine, 90, 5, motors, imu)
+                new DriveState(stateMachine, motors, 5, "forward", 5),
+                // new CWTurnByPID(stateMachine, 90, 5, motors, imu),
+                // new CCWTurnByPID(stateMachine, 90, 5, motors, imu)
+                new ExtendRail(stateMachine, 5)
 
 
 

@@ -11,8 +11,8 @@ public class ExtendRail extends State {
     private int inches;
     private int targetTicks;
     private DcMotor railMotor;
-    private Servo swinggy;
-    private Servo armServo;
+   // private Servo swinggy;
+   // private Servo armServo;
 
     /**
      * This is the default State constructor.
@@ -44,8 +44,8 @@ public class ExtendRail extends State {
     void update() {
         if (this.railMotor.getCurrentPosition() < this.railMotor.getTargetPosition() && elapsedTime.seconds() < 3) {
             this.railMotor.setPower(this.power);
-            this.swinggy.setPosition(1);
-            this.armServo.setPosition(0);
+            // this.swinggy.setPosition(1);
+           // this.armServo.setPosition(0);
         }
         else {
 
@@ -57,8 +57,8 @@ public class ExtendRail extends State {
     void stop() {
 
         this.railMotor.setPower(0);
-        this.swinggy.setPosition(0.5);
-        this.armServo.setPosition(0.5);
+       // this.swinggy.setPosition(0.5);
+      //  this.armServo.setPosition(0.5);
 
 
     }
@@ -66,7 +66,7 @@ public class ExtendRail extends State {
     @Override
     void initialize() {
         this.railMotor = this.hardwareMap.get(DcMotor.class, "xr");
-        this.armServo = this.hardwareMap.get(Servo.class, "cs");
-        this.swinggy = this.hardwareMap.get(Servo.class, "ts");
+        // this.armServo = this.hardwareMap.get(Servo.class, "cs");
+       // this.swinggy = this.hardwareMap.get(Servo.class, "ts");
     }
 }

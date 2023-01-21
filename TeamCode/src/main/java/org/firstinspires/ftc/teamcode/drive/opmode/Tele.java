@@ -92,7 +92,7 @@ public class Tele extends OpMode {
             DcMotor motor = this.motors[i];
 
 
-            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
 
         // XRail
@@ -132,10 +132,10 @@ public class Tele extends OpMode {
 
         double[] powers = {
 
-                drive - turn,
-                drive + turn,
-                drive - turn,
-                drive + turn
+                drive - turn, // front left
+                drive + turn, // front right
+                drive - turn, // back left
+                drive + turn // back right
         };
 
 
