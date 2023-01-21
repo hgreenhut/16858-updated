@@ -125,9 +125,9 @@ public class Tele extends OpMode {
     @Override
     public void loop() {
         // DRIVING
-        double drive = gamepad2.right_stick_y;
+        double drive = gamepad1.left_stick_y;
 
-        double turn = gamepad2.left_stick_x;
+        double turn = gamepad1.right_stick_x;
 
 
         double[] powers = {
@@ -146,7 +146,7 @@ public class Tele extends OpMode {
 
 
         // XRAIL
-        double xrSpeed = gamepad1.left_stick_y;
+        double xrSpeed = gamepad2.left_stick_y;
         xrail.setPower(xrSpeed);
 
 
@@ -154,7 +154,7 @@ public class Tele extends OpMode {
         // SERVO
 
         if (gamepad2.b) {
-            hook.setPosition(1);
+            hook.setPosition(0.6);
             telemetry.addData("Servo Position:", hook.getPosition());
         } else if (gamepad2.a){
             hook.setPosition(0);
