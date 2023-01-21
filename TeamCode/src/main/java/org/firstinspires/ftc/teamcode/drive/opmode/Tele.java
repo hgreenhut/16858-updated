@@ -61,6 +61,7 @@ public class Tele extends OpMode {
 
     private DcMotor xrail;
     private Servo hook;
+    boolean hook_on;
 
 
     private final double MAX_CAR_POWER = .5;
@@ -80,18 +81,17 @@ public class Tele extends OpMode {
         backLeft = hardwareMap.get(DcMotor.class, "bl");
         backRight = hardwareMap.get(DcMotor.class, "br");
 
-        //frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        //frontRight.setDirection(DcMotor.Direction.REVERSE);
-        //backLeft.setDirection(DcMotor.Direction.FORWARD);
-        //backRight.setDirection(DcMotor.Direction.REVERSE);
+        frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        frontRight.setDirection(DcMotor.Direction.REVERSE);
+        backLeft.setDirection(DcMotor.Direction.FORWARD);
+        backRight.setDirection(DcMotor.Direction.REVERSE);
 
         // INIT MOTORS
         this.motors = new DcMotor[]{frontLeft, frontRight, backLeft, backRight};
         for (int i = 0; i < this.motors.length; i++) {
             DcMotor motor = this.motors[i];
-            DcMotor.Direction direction = i % 2 == 0 ? DcMotor.Direction.REVERSE : DcMotor.Direction.FORWARD;
 
-            motor.setDirection(direction);
+
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         }
 
@@ -125,9 +125,9 @@ public class Tele extends OpMode {
     @Override
     public void loop() {
         // DRIVING
-        double drive = gamepad1.left_stick_y;
+        double drive = gamepad2.right_stick_y;
 
-        double turn = gamepad1.left_stick_y;
+        double turn = gamepad2.left_stick_x;
 
 
         double[] powers = {
@@ -144,27 +144,21 @@ public class Tele extends OpMode {
             telemetry.addData("Power ", "Run Time: " + runtime.toString());
         }
 
-        // XRAIL
-        float upSpeed = gamepad2.right_trigger;
-        float downSpeed = gamepad2.left_trigger;
-        float totalSpeed = upSpeed - downSpeed;
 
+        // XRAIL
+        double xrSpeed = gamepad1.left_stick_y;
+        xrail.setPower(xrSpeed);
 
 
 
         // SERVO
-        boolean hook_on = false;
-        if (gamepad2.b) {
-            hook_on = true;
-        } else if (gamepad2.a){
-            hook_on = false;
-        }
 
-        if (hook_on) {
+        if (gamepad2.b) {
             hook.setPosition(1);
-        } else {
+        } else if (gamepad2.a){
             hook.setPosition(0);
         }
+
 
 
 
