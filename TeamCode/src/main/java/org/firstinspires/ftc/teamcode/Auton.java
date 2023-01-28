@@ -42,6 +42,8 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
+import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
+import org.firstinspires.ftc.teamcode.statemachine.DetectState;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
@@ -79,7 +81,13 @@ public class Auton extends OpMode {
         leftBack = hardwareMap.dcMotor.get("bl");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.calibrationDataFile = "AdafruitIMUCalibration.json";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
+        imu.initialize(parameters);
 
         ArrayList<DcMotor> motors = new ArrayList<DcMotor>();
         motors.add(rightFront);
@@ -103,14 +111,7 @@ public class Auton extends OpMode {
 
         State[] states = {
 
-                // see what position the duck is in
-                // new DetermineDuckStateLeft(stateMachine),
-
-                // get to shipping hub
-                //new DriveState(stateMachine, motors, 5, "forward", 9),
-                new DriveState(stateMachine, motors, .6, "forward", 10),
-                new WaitState(10, "Wait5", this.stateMachine),
-                new DriveState(stateMachine, motors, .6, "forward", 20),
+                new DetectState(this.stateMachine, motors, imu)
 
 
         };

@@ -26,7 +26,7 @@ public class CWTurnByPID extends State {
     DcMotor leftBack;
     DcMotor rightBack;
     BNO055IMU imu;
-    Orientation             lastAngles = new Orientation();
+    Orientation lastAngles = new Orientation();
 
 
     PIDController pidRotate;
@@ -45,6 +45,7 @@ public class CWTurnByPID extends State {
             (WHEEL_DIAMETER_INCHES * 3.1415);
     static double driveSpeed = 0.6;
     static final double TURN_SPEED = 0.5;
+    double startAngle;
 
 
     private State NextState;
@@ -63,20 +64,16 @@ public class CWTurnByPID extends State {
 
     }
 
-    public void setNextState(State state) {
-        NextState  = state;
-
-    }
-
-
-
-
-
-
     @Override
     public void start() {
 
         pidRotate = new PIDController(.025, 0, 0);
+        pidRotate.reset();
+        pidRotate.setSetpoint(this.target);
+        pidRotate.setInputRange(0, 359);
+        pidRotate.setOutputRange(.10, this.driveSpeed);
+        pidRotate.setTolerance(.05);
+        pidRotate.enable();
 
         rightFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftFront.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -94,10 +91,24 @@ public class CWTurnByPID extends State {
     @Override
     public void update() {
 
-        rotate((int)target, driveSpeed);
-        this.startNextState();
+        double power = pidRotate.performPID(getAngle());
 
+        if(target < 0) {
+            leftFront.setPower(power);
+            leftBack.setPower(power);
+            rightFront.setPower(-power);
+            rightBack.setPower(-power);
+        }
+        else {
+            leftFront.setPower(-power);
+            leftBack.setPower(-power);
+            rightFront.setPower(power);
+            rightBack.setPower(power);
+        }
 
+        if ((Math.abs(getAngle()-5) - startAngle) >= this.target) {
+            this.startNextState();
+        }
     }
 
     @Override
@@ -106,19 +117,20 @@ public class CWTurnByPID extends State {
         leftFront.setPower(0);
         rightBack.setPower(0);
         leftBack.setPower(0);
-        this.startNextState();
     }
 
     @Override
     void initialize() {
-
+        this.resetAngle();
     }
 
     private void resetAngle()
     {
+
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         globalAngle = 0;
+        startAngle = getAngle();
     }
 
     /**
@@ -155,8 +167,6 @@ public class CWTurnByPID extends State {
      */
     private void rotate(int degrees, double power)
     {
-        // restart imu angle tracking.
-        resetAngle();
 
         // start pid controller. PID controller will monitor the turn angle with respect to the
         // target angle and reduce power as we approach the target angle with a minimum of 20%.
@@ -271,7 +281,7 @@ public class CWTurnByPID extends State {
         //   wait(500);
 
         // reset angle tracking on new heading.
-        resetAngle();
+        //resetAngle();
     }
 
 
