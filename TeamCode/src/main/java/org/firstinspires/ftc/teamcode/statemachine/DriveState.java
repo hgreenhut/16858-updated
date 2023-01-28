@@ -81,7 +81,7 @@ public class DriveState extends State {
 
         @Override
         void update() {
-                if ((!(Movement.equals("backward"))) && (newLeftBackTarget > leftBack.getCurrentPosition() && newRightBackTarget > rightBack.getCurrentPosition() && newLeftFrontTarget > leftFront.getCurrentPosition() && newRightFrontTarget > rightFront.getCurrentPosition())) {
+            if ((!(Movement.equals("backward"))) && (newLeftBackTarget > leftBack.getCurrentPosition() && newRightBackTarget > rightBack.getCurrentPosition() && newLeftFrontTarget > leftFront.getCurrentPosition() && newRightFrontTarget > rightFront.getCurrentPosition())) {
 
                     if (Movement.equals("left")) {
                         leftBack.setPower(driveSpeed);

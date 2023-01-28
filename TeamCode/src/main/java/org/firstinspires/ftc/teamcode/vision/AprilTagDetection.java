@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.vision;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.CommonVariables;
 import org.firstinspires.ftc.teamcode.components.Component;
+import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -24,6 +25,9 @@ public class AprilTagDetection extends Component {
     double cy = 221.506;
     double tagsize = 0.166;
     int detectedTag = 0;
+    final int LEFT = 1;
+    final int MIDDLE = 2;
+    final int RIGHT = 3;
 
 
     public AprilTagDetection(CommonVariables commonVariables) {
@@ -78,40 +82,16 @@ public class AprilTagDetection extends Component {
 
     @Override
     public void update() {
-        ArrayList<org.openftc.apriltag.AprilTagDetection> detections = this.pipeline.getDetectionsUpdate();
-
-        // If there's been a new frame...
-        if(detections != null) {
-            // If we don't see any tags
-            if (detections.size() == 0) {
-                numFramesWithoutDetection++;
-
-                // If we haven't seen a tag for a few frames, lower the decimation
-                // so we can hopefully pick one up if we're e.g. far back
-                if (numFramesWithoutDetection >= THRESHOLD_NUM_FRAMES_NO_DETECTION_BEFORE_LOW_DECIMATION) {
-                    this.pipeline.setDecimation(DECIMATION_LOW);
-                }
-            }
-            // We do see tags!
-            else {
-                numFramesWithoutDetection = 0;
-
-                // If the target is within 1 meter, turn on high decimation to
-                // increase the frame rate
-                if (detections.get(0).pose.z < THRESHOLD_HIGH_DECIMATION_RANGE_METERS) {
-                    this.pipeline.setDecimation(DECIMATION_HIGH);
-                }
-
-                for (org.openftc.apriltag.AprilTagDetection detection : detections) {
-                    telemetry.addLine(String.format("\nDetected tag ID=%d", detection.id));
-                    this.detectedTag = detection.id;
-                    break;
-                }
-            }
-        }
     }
 
-    public int getPosition() {
-        return this.detectedTag;
+    public int getTarget() {
+        /**if (this.detectedTag == LEFT) {
+            return "LEFT";
+        } else if (this.detectedTag == MIDDLE) {
+            return "MIDDLE";
+        } else if (this.detectedTag == RIGHT) {
+            return "RIGHT";
+        }**/
+        return this.pipeline.getAnalysis();
     }
 }

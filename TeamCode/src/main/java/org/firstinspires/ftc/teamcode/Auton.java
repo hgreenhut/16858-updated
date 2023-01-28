@@ -45,6 +45,7 @@ import org.firstinspires.ftc.teamcode.components.ComponentHelper;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
+import org.firstinspires.ftc.teamcode.statemachine.WaitState;
 import org.firstinspires.ftc.teamcode.vision.AprilTagDetection;
 
 import java.util.ArrayList;
@@ -106,7 +107,11 @@ public class Auton extends OpMode {
                 // new DetermineDuckStateLeft(stateMachine),
 
                 // get to shipping hub
-                new DriveState(stateMachine, motors, 5, "forward", 9),
+                //new DriveState(stateMachine, motors, 5, "forward", 9),
+                new DriveState(stateMachine, motors, .6, "forward", 10),
+                new WaitState(10, "Wait5", this.stateMachine),
+                new DriveState(stateMachine, motors, .6, "forward", 20),
+
 
         };
 
@@ -130,6 +135,7 @@ public class Auton extends OpMode {
      */
     @Override
     public void init_loop() {
+        this.telemetry.addData("Target", ComponentHelper.getComponent(AprilTagDetection.class, commonVariables).getTarget());
     }
 
     /*
@@ -148,7 +154,11 @@ public class Auton extends OpMode {
     @Override
     public void loop() {
         this.stateMachine.update();
-        this.telemetry.addData("Position:", ComponentHelper.getComponent(AprilTagDetection.class, commonVariables).getPosition());
+        telemetry.addData("LeftBack", leftBack.getCurrentPosition());
+        telemetry.addData("LeftFront", leftFront.getCurrentPosition());
+        telemetry.addData("RightBack", rightBack.getCurrentPosition());
+        telemetry.addData("RightFront", rightFront.getCurrentPosition());
+        this.telemetry.addData("Target:", ComponentHelper.getComponent(AprilTagDetection.class, commonVariables).getTarget());
     }
 
     /*

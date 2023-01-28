@@ -46,6 +46,9 @@ class AprilTagPipeline extends OpenCvPipeline
     private boolean needToSetDecimation;
     private final Object decimationSync = new Object();
 
+    private volatile int position = 0;
+
+
     public AprilTagPipeline(double tagsize, double fx, double fy, double cx, double cy)
     {
         this.tagsize = tagsize;
@@ -108,10 +111,17 @@ class AprilTagPipeline extends OpenCvPipeline
             Pose pose = poseFromTrapezoid(detection.corners, cameraMatrix, tagsizeX, tagsizeY);
             drawAxisMarker(input, tagsizeY/2.0, 6, pose.rvec, pose.tvec, cameraMatrix);
             draw3dCubeMarker(input, tagsizeX, tagsizeX, tagsizeY, 5, pose.rvec, pose.tvec, cameraMatrix);
+            this.position = detection.id;
         }
 
         return input;
     }
+
+    public int getAnalysis()
+    {
+        return this.position;
+    }
+
 
     public void setDecimation(float decimation)
     {
