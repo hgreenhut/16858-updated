@@ -44,8 +44,8 @@ public class DetectState extends State {
                 if (position == 1) {
                     State[] states = {
                             new DriveState(stateMachine, this.motors, .6, "forward", 40),
-                            new DriveState(stateMachine, this.motors, .6, "backward", -17),
-                            new CWTurnByPID(stateMachine, -90, .5, motors, imu),
+                            new DriveState(stateMachine, this.motors, .6, "backward", -15),
+                            new CCWTurnByPID(stateMachine, -90, .5, motors, imu),
                             new DriveState(stateMachine, this.motors, .6, "forward", 20),
                     };
                     this.insert(states);
@@ -57,7 +57,7 @@ public class DetectState extends State {
                 } else if (position == 3) {
                     State[] states = {
                             new DriveState(stateMachine, this.motors, .6, "forward", 40),
-                            new DriveState(stateMachine, this.motors, .6, "backward", -17),
+                            new DriveState(stateMachine, this.motors, .6, "backward", -15),
                             new CWTurnByPID(stateMachine, 90, .5, motors, imu),
                             new DriveState(stateMachine, this.motors, .6, "forward", 20),
                     };
