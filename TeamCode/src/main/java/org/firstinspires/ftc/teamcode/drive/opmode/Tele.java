@@ -61,7 +61,10 @@ public class Tele extends OpMode {
 
     private DcMotor xrail;
     private Servo hook;
-    boolean hook_on;
+
+    boolean low_sens = false;
+
+
 
 
     private final double MAX_CAR_POWER = .5;
@@ -125,6 +128,13 @@ public class Tele extends OpMode {
     @Override
     public void loop() {
         // DRIVING
+
+        if (gamepad1.b) {
+            low_sens = true;
+        } else if (gamepad1.a) {
+            low_sens = false;
+        }
+
         double drive = gamepad1.left_stick_y;
 
         double turn = gamepad1.right_stick_x;
@@ -140,7 +150,13 @@ public class Tele extends OpMode {
 
 
         for (int i = 0; i < this.motors.length; i++) {
-            this.motors[i].setPower(powers[i]);
+            double power = powers[i];
+            if (low_sens) {
+                power = powers[i] / 2;
+            } else {
+
+            }
+            this.motors[i].setPower(power);
             telemetry.addData("Power ", "Run Time: " + runtime.toString());
         }
 
@@ -154,7 +170,7 @@ public class Tele extends OpMode {
         // SERVO
 
         if (gamepad2.b) {
-            hook.setPosition(0.6);
+            hook.setPosition(0.8);
             telemetry.addData("Servo Position:", hook.getPosition());
         } else if (gamepad2.a){
             hook.setPosition(0);
