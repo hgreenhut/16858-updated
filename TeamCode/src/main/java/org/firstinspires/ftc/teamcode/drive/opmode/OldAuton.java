@@ -33,13 +33,10 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.CommonVariables;
-import org.firstinspires.ftc.teamcode.statemachine.CCWTurnByPID;
-import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
 import org.firstinspires.ftc.teamcode.statemachine.DriveState;
 import org.firstinspires.ftc.teamcode.statemachine.ExtendRail;
 import org.firstinspires.ftc.teamcode.statemachine.State;
@@ -112,7 +109,7 @@ public class OldAuton extends OpMode {
         State[] states = {
 
 
-                new DriveState(stateMachine, motors, 5, "forward", 5),
+             //   new DriveState(stateMachine, motors, 5, "forward", 5),
                 // new CWTurnByPID(stateMachine, 90, 5, motors, imu),
                 // new CCWTurnByPID(stateMachine, 90, 5, motors, imu)
                 new ExtendRail(stateMachine, 5)

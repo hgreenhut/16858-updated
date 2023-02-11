@@ -33,7 +33,7 @@ public class DetectStateV2 extends State {
 
         if (this.measurements >= 50 && (this.elapsedTime.milliseconds() > 1000)) {
             State[] states = {
-                    new DriveState(stateMachine, this.motors, .6, "forward", 1),
+                //    new DriveState(stateMachine, this.motors, .6, "forward", 1),
                     new DetectStateV2(this.stateMachine, this.motors, imu),
             };
             this.insert(states);
@@ -43,21 +43,21 @@ public class DetectStateV2 extends State {
             if (position > 0) {
                 if (position == 1) {
                     State[] states = {
-                            new DriveState(stateMachine, this.motors, .6, "forward", 45),
-                            new CCWTurnByPID(stateMachine, -90, .5, motors, imu),
-                            new DriveState(stateMachine, this.motors, .6, "forward", 20),
+                   //         new DriveState(stateMachine, this.motors, .6, "forward", 45),
+                     //       new CCWTurnByPID(stateMachine, -90, .5, motors, imu),
+                       //     new DriveState(stateMachine, this.motors, .6, "forward", 20),
                     };
                     this.insert(states);
                 } else if (position == 2) {
                     State[] states = {
-                            new DriveState(stateMachine, this.motors, .6, "forward", 45),
+                //            new DriveState(stateMachine, this.motors, .6, "forward", 45),
                     };
                     this.insert(states);
                 } else if (position == 3) {
                     State[] states = {
-                            new DriveState(stateMachine, this.motors, .6, "forward", 45),
+                   //         new DriveState(stateMachine, this.motors, .6, "forward", 45),
                             new CWTurnByPID(stateMachine, 90, .5, motors, imu),
-                            new DriveState(stateMachine, this.motors, .6, "forward", 20),
+                    //        new DriveState(stateMachine, this.motors, .6, "forward", 20),
                     };
                     this.insert(states);
                 }

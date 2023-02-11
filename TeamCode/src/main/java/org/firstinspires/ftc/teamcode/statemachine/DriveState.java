@@ -79,67 +79,67 @@ public class DriveState extends State {
 
     }
 
-        @Override
-        void update() {
-            if ((!(Movement.equals("backward"))) && (newLeftBackTarget > leftBack.getCurrentPosition() && newRightBackTarget > rightBack.getCurrentPosition() && newLeftFrontTarget > leftFront.getCurrentPosition() && newRightFrontTarget > rightFront.getCurrentPosition())) {
+    @Override
+    void update() {
+        if ((!(Movement.equals("backward"))) && (newLeftBackTarget > leftBack.getCurrentPosition() && newRightBackTarget > rightBack.getCurrentPosition() && newLeftFrontTarget > leftFront.getCurrentPosition() && newRightFrontTarget > rightFront.getCurrentPosition())) {
 
-                    if (Movement.equals("left")) {
-                        leftBack.setPower(driveSpeed);
-                        leftFront.setPower(-driveSpeed);
-                        rightBack.setPower(-driveSpeed);
-                        rightFront.setPower(driveSpeed);
-                    } else if (Movement.equals("right")) {
-                        leftBack.setPower(-driveSpeed);
-                        leftFront.setPower(driveSpeed);
-                        rightBack.setPower(driveSpeed);
-                        rightFront.setPower(-driveSpeed);
-                    } else if (Movement.equals("backward")) {
-                        leftBack.setPower(-driveSpeed);
-                        leftFront.setPower(-driveSpeed);
-                        rightBack.setPower(-driveSpeed);
-                        rightFront.setPower(-driveSpeed);
-                    } else if (Movement.equals("turnRight")) {
-                        leftBack.setPower(-driveSpeed);
-                        leftFront.setPower(-driveSpeed);
-                        rightBack.setPower(driveSpeed);
-                        rightFront.setPower(driveSpeed);
-                    } else if (Movement.equals("turnLeft")) {
-                        leftBack.setPower(driveSpeed);
-                        leftFront.setPower(driveSpeed);
-                        rightBack.setPower(-driveSpeed);
-                        rightFront.setPower(-driveSpeed);
-                    } else {
-                        leftBack.setPower(driveSpeed);
-                        leftFront.setPower(driveSpeed);
-                        rightBack.setPower(driveSpeed);
-                        rightFront.setPower(driveSpeed);
-                    }
-
-                } else if (Movement.equals("backward") && (newLeftBackTarget < leftBack.getCurrentPosition() && newRightBackTarget < rightBack.getCurrentPosition() && newLeftFrontTarget < leftFront.getCurrentPosition() && newRightFrontTarget < rightFront.getCurrentPosition())) {
-                    leftBack.setPower(-driveSpeed);
-                    leftFront.setPower(-driveSpeed);
-                    rightBack.setPower(-driveSpeed);
-                    rightFront.setPower(-driveSpeed);
-
-
-                } else {
-                    this.startNextState();
-
-                }
+            if (Movement.equals("left")) {
+                leftBack.setPower(driveSpeed);
+                leftFront.setPower(-driveSpeed);
+                rightBack.setPower(-driveSpeed);
+                rightFront.setPower(driveSpeed);
+            } else if (Movement.equals("right")) {
+                leftBack.setPower(-driveSpeed);
+                leftFront.setPower(driveSpeed);
+                rightBack.setPower(driveSpeed);
+                rightFront.setPower(-driveSpeed);
+            } else if (Movement.equals("backward")) {
+                leftBack.setPower(-driveSpeed);
+                leftFront.setPower(-driveSpeed);
+                rightBack.setPower(-driveSpeed);
+                rightFront.setPower(-driveSpeed);
+            } else if (Movement.equals("turnRight")) {
+                leftBack.setPower(-driveSpeed);
+                leftFront.setPower(-driveSpeed);
+                rightBack.setPower(driveSpeed);
+                rightFront.setPower(driveSpeed);
+            } else if (Movement.equals("turnLeft")) {
+                leftBack.setPower(driveSpeed);
+                leftFront.setPower(driveSpeed);
+                rightBack.setPower(-driveSpeed);
+                rightFront.setPower(-driveSpeed);
+            } else {
+                leftBack.setPower(driveSpeed);
+                leftFront.setPower(driveSpeed);
+                rightBack.setPower(driveSpeed);
+                rightFront.setPower(driveSpeed);
             }
 
+        } else if (Movement.equals("backward") && (newLeftBackTarget < leftBack.getCurrentPosition() && newRightBackTarget < rightBack.getCurrentPosition() && newLeftFrontTarget < leftFront.getCurrentPosition() && newRightFrontTarget < rightFront.getCurrentPosition())) {
+            leftBack.setPower(-driveSpeed);
+            leftFront.setPower(-driveSpeed);
+            rightBack.setPower(-driveSpeed);
+            rightFront.setPower(-driveSpeed);
 
-            @Override
-            void stop() {
-                rightFront.setPower(0);
-                leftFront.setPower(0);
-                rightBack.setPower(0);
-                leftBack.setPower(0);
-                this.startTimeOut(1);
 
-            }
+        } else {
+            this.startNextState();
 
-            @Override
-            void initialize() {
-            }
         }
+    }
+
+
+    @Override
+    void stop() {
+        rightFront.setPower(0);
+        leftFront.setPower(0);
+        rightBack.setPower(0);
+        leftBack.setPower(0);
+        this.startTimeOut(1);
+
+    }
+
+    @Override
+    void initialize() {
+    }
+}

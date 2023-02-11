@@ -31,23 +31,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.teamcode.components.Component;
 import org.firstinspires.ftc.teamcode.components.ComponentHelper;
-import org.firstinspires.ftc.teamcode.statemachine.CWTurnByPID;
 import org.firstinspires.ftc.teamcode.statemachine.DetectState;
-import org.firstinspires.ftc.teamcode.statemachine.DriveState;
 import org.firstinspires.ftc.teamcode.statemachine.State;
 import org.firstinspires.ftc.teamcode.statemachine.StateMachine;
-import org.firstinspires.ftc.teamcode.statemachine.WaitState;
 import org.firstinspires.ftc.teamcode.vision.AprilTagDetection;
 
 import java.util.ArrayList;
@@ -75,10 +68,11 @@ public class Auton extends OpMode {
      */
     @Override
     public void init() {
-        rightFront = hardwareMap.dcMotor.get("fr");
-        leftFront = hardwareMap.dcMotor.get("fl");
-        rightBack = hardwareMap.dcMotor.get("br");
-        leftBack = hardwareMap.dcMotor.get("bl");
+
+        leftFront  = hardwareMap.get(DcMotor.class, "fl");
+        rightFront = hardwareMap.get(DcMotor.class, "fr");
+        leftBack  = hardwareMap.get(DcMotor.class, "bl");
+        rightBack = hardwareMap.get(DcMotor.class, "br");
 
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
