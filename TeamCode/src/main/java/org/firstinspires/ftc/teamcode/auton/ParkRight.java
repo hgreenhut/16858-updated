@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.auton;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
+import org.firstinspires.ftc.teamcode.statemachine.DriveState;
+
 /**
  * This is the autonomous state machine, where we make and run the states.
  */
