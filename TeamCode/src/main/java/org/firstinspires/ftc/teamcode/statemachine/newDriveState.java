@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.statemachine;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.auton.PIDController;
@@ -29,10 +30,10 @@ public class newDriveState extends State {
     DcMotor rightFront;
 
     private int ticksPerTurn = 1120;
-    private boolean m0Reached = false;
-    private boolean m1Reached = false;
-    private boolean m2Reached = false;
-    private boolean m3Reached = false;
+    private boolean flReached = false;
+    private boolean frReached = false;
+    private boolean blReached = false;
+    private boolean brReached = false;
     private int threshold = 75;
     private PIDController pidDrive_x;
     private PIDController pidDrive_y;
@@ -50,16 +51,16 @@ public class newDriveState extends State {
         super(stateMachine);
         this.distance = distance;
         this.speed = speed;
-        this.direction = (direction + 45) % 360;
+        this.direction = (direction - 45) % 360;
         leftFront = motor.get(0);
         rightFront = motor.get(1);
         leftBack = motor.get(2);
         rightBack = motor.get(3);
 
 
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
         rightFront.setDirection(DcMotor.Direction.FORWARD);
-        leftBack.setDirection(DcMotor.Direction.FORWARD);
+        leftBack.setDirection(DcMotor.Direction.REVERSE);
         rightBack.setDirection(DcMotor.Direction.FORWARD);
 
     }
@@ -73,22 +74,21 @@ public class newDriveState extends State {
         rightBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBack.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //Bring them back to using encoders
-        int currentPosition = (leftFront.getCurrentPosition()
-                + rightFront.getCurrentPosition()
-                + leftBack.getCurrentPosition()
-                + rightBack.getCurrentPosition()) / 4;
+
+
 
         double distance_x = distance * Math.cos(Math.toRadians(direction));
         double distance_y = distance * Math.sin(Math.toRadians(direction));
 
-        position_x = currentPosition + TickService.inchesToTicks(distance_x);
-        position_y = currentPosition + TickService.inchesToTicks(distance_y);
+        position_x =  TickService.inchesToTicks(distance_x);
+        position_y = TickService.inchesToTicks(distance_y);
 
-        leftFront.setTargetPosition(position_x);
         leftBack.setTargetPosition(position_x);
+        rightFront.setTargetPosition(position_x);
 
-        rightFront.setTargetPosition(position_y);
+        leftFront.setTargetPosition(position_y);
         rightBack.setTargetPosition(position_y);
+
 
         leftFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFront.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -104,16 +104,24 @@ public class newDriveState extends State {
 
     @Override
     void update() {
-        m0Reached = Math.abs(leftFront.getCurrentPosition() - position_x) < threshold;
-        m1Reached = Math.abs(rightFront.getCurrentPosition() - position_y) < threshold;
-        m2Reached = Math.abs(leftBack.getCurrentPosition() - position_x) < threshold;
-        m3Reached = Math.abs(rightBack.getCurrentPosition() - position_y) < threshold;
+        flReached = Math.abs(leftFront.getCurrentPosition() - position_y) < threshold;
+        frReached = Math.abs(rightFront.getCurrentPosition() - position_x) < threshold;
+        blReached = Math.abs(leftBack.getCurrentPosition() - position_x) < threshold;
+        brReached = Math.abs(rightBack.getCurrentPosition() - position_y) < threshold;
 
-        if (m0Reached || m1Reached || m2Reached || m3Reached) {
-            this.startNextState();
+        if (flReached) {
+            leftFront.setPower(0);
+        } else if (frReached) {
+            rightFront.setPower(0);
+        } else if (blReached) {
+            leftBack.setPower(0);
+        } else if (brReached) {
+            rightBack.setPower(0);
         } else {
             drive(driveSpeed_x,driveSpeed_y);
-
+        }
+        if (flReached && frReached && blReached && brReached) {
+            this.startNextState();
         }
     }
 
@@ -137,6 +145,11 @@ public class newDriveState extends State {
         rightFront.setPower(driveSpeed_y);
         leftBack.setPower(driveSpeed_x);
         rightBack.setPower(driveSpeed_y);
+    }
+
+    public float[] rotate(float[] point,float degrees) {
+        double d = Math.toRadians((double)degrees);
+        return new float[]{(float)(Math.cos(d)*point[0]-Math.sin(d)*point[1]),(float)(Math.cos(d)*point[1]+Math.sin(d)*point[0])};
     }
 
 }
