@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode.drive.opmode;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@TeleOp(name="TeleOp1", group="Iterative Opmode")
-public class Teleop extends OpMode {
+@TeleOp(name="TeleOp2", group="Iterative Opmode")
+public class oldTeleop extends OpMode {
     private DcMotor fl = null;
     private DcMotor fr = null;
     private DcMotor bl = null;
@@ -74,17 +70,6 @@ public class Teleop extends OpMode {
             fl.setPower(gamepad1.right_stick_x);
             br.setPower(-gamepad1.right_stick_x);
         }
-        if (gamepad1.dpad_up) {
-            lift.setPower(1.0f);
-            lift2.setPower(1.0f);
-        } else if (gamepad1.dpad_down) {
-            lift.setPower(-1.0f);
-            lift2.setPower(-1.0f);
-        } else {
-            lift.setPower(0.0f);
-            lift2.setPower(0.0f);
-        }
-
         if (gamepad1.b) {
             hook.setPosition(0.8);
             telemetry.addData("Servo Position:", hook.getPosition());
